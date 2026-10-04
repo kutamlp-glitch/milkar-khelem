@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>آؤ مل کر کھیلیں – Urdu Lesson 5</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Noto+Sans+Malayalam:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff7e0;--card:#fff;--ink:#2b2d42;--pink:#ff5d8f;--blue:#3a86ff;--green:#2dc653;--yellow:#ffbe0b;--purple:#8338ec}
+@media(prefers-color-scheme:dark){:root{--bg:#1d1b2e;--card:#2a2745;--ink:#f4f1ff}}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Baloo 2','Noto Sans Malayalam',sans-serif;background:var(--bg);color:var(--ink);font-size:18px}
+header{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;text-align:center;padding:14px 10px}
+header h1{margin:0;font-size:1.6rem}
+.ur{font-family:'Noto Nastaliq Urdu','Jameel Noori Nastaleeq',serif;direction:rtl;line-height:2.3}
+.ml{font-family:'Noto Sans Malayalam',sans-serif;font-size:.85em;opacity:.85}
+#stars{float:right;background:var(--yellow);color:#333;border-radius:20px;padding:2px 12px;font-weight:800}
+nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:10px;position:sticky;top:0;background:var(--bg);z-index:5}
+nav button,.btn{font:inherit;font-weight:800;border:0;border-radius:16px;padding:10px 16px;cursor:pointer;color:#fff;background:var(--blue);box-shadow:0 4px 0 rgba(0,0,0,.2);transition:transform .1s}
+nav button:active,.btn:active{transform:translateY(3px)}
+nav button.on{background:var(--pink)}
+main{max-width:860px;margin:0 auto;padding:10px 14px 60px}
+section{display:none;animation:pop .4s}section.on{display:block}
+@keyframes pop{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:22px;padding:14px 18px;margin:12px 0;box-shadow:0 6px 16px rgba(0,0,0,.12)}
+.line{display:flex;align-items:center;gap:10px;border-bottom:2px dashed #ccc;padding:4px 0}
+.line:last-child{border:0}
+.line .t{flex:1}
+.say{border:0;background:var(--green);color:#fff;border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer;flex:none}
+.w{cursor:pointer;border-radius:8px;padding:0 3px}.w:hover{background:var(--yellow);color:#222}
+#pop{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--purple);color:#fff;border-radius:20px;padding:12px 22px;display:none;z-index:9;text-align:center;max-width:90%}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chip,.tgt{border-radius:16px;padding:10px;text-align:center;min-height:70px;display:flex;flex-direction:column;justify-content:center}
+.chip{background:var(--yellow);color:#222;cursor:grab;font-size:1.3rem;border:3px solid transparent;user-select:none}
+.chip.sel{border-color:var(--pink);transform:scale(1.06)}
+.chip.done{visibility:hidden}
+.tgt{background:#e8f0ff;color:#222;border:3px dashed var(--blue)}
+.tgt.ok{background:#c9f7d4;border-color:var(--green)}
+.shake{animation:sh .4s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.tile{display:inline-block;margin:4px;font-size:1.6rem;min-width:52px;padding:4px 10px;border-radius:14px;background:var(--yellow);color:#222;cursor:pointer;text-align:center;font-family:'Noto Nastaliq Urdu',serif;line-height:2}
+.tile.used{opacity:.25;pointer-events:none}
+.answer{min-height:64px;border:3px dashed var(--purple);border-radius:16px;margin:8px 0;padding:4px 10px;font-size:1.6rem;direction:rtl;text-align:center}
+.opt{display:block;width:100%;margin:8px 0;background:var(--blue);font-size:1.3rem}
+.opt.good{background:var(--green)}.opt.bad{background:#e63946}
+.msg{min-height:30px;font-weight:800;text-align:center}
+textarea{width:100%;min-height:90px;font-size:1.2rem;border-radius:14px;border:3px solid var(--blue);padding:8px;direction:rtl;font-family:'Noto Nastaliq Urdu',serif}
+.fly{position:fixed;font-size:2rem;pointer-events:none;z-index:20;animation:fl 1.4s forwards}
+@keyframes fl{to{transform:translateY(-220px) rotate(40deg);opacity:0}}
+</style>
+</head>
+<body>
+<header>
+  <span id="stars">⭐ 0</span>
+  <h1 class="ur" style="line-height:1.8">آؤ مل کر کھیلیں</h1>
+  <div class="ml">ഹംസഫർ · യൂണിറ്റ് 2 · പാഠം 5 – വരൂ, ഒരുമിച്ച് കളിക്കാം!</div>
+</header>
+<nav id="nav"></nav>
+<main>
+<section id="s-read">
+  <div class="card"><h2>🗣️ സംഭാഷണം <small class="ml">(വാക്കിൽ തൊട്ടാൽ അർത്ഥം കാണാം)</small></h2><div id="conv"></div>
+    <button class="btn" onclick="playAll(CONV)">🔊 എല്ലാം കേൾക്കാം</button></div>
+  <div class="card"><h2>🎵 കവിത: آؤ! مل کر کھیلیں</h2><div id="poem"></div>
+    <button class="btn" onclick="playAll(POEM)">🔊 കവിത മുഴുവൻ കേൾക്കാം</button></div>
+  <div class="card"><h2>🤼 کبڈی – കബഡി</h2><div id="kab"></div>
+    <button class="btn" onclick="playAll(KAB)">🔊 കേൾക്കാം</button></div>
+  <p class="ml" id="voiceNote"></p>
+</section>
+<section id="s-m1"><div class="card"><h2>🏏 ജോടിയാക്കൂ</h2>
+  <p class="ml">കളി ഉപകരണത്തെ ശരിയായ കളിയിലേക്ക് വലിച്ചിടൂ (അല്ലെങ്കിൽ ഉപകരണത്തിൽ തൊട്ടശേഷം കളിയിൽ തൊടൂ).</p><div id="g1"></div></div></section>
+<section id="s-m2"><div class="card"><h2>👀 ശരീരഭാഗങ്ങൾ</h2>
+  <p class="ml">ശരീരഭാഗത്തെ ശരിയായ വാക്യത്തിലേക്ക് ചേർക്കൂ.</p><div id="g2"></div></div></section>
+<section id="s-sent"><div class="card"><h2>✍️ വാക്യം ഉണ്ടാക്കൂ</h2>
+  <p class="ml">വാക്കുകൾ ശരിയായ ക്രമത്തിൽ തൊടൂ (വലത്തുനിന്ന് ഇടത്തേക്ക്).</p><div id="g3"></div></div>
+  <div class="card"><h2>📝 എന്റെ ഇഷ്ടപ്പെട്ട കളി</h2><p class="ml">ഇഷ്ടപ്പെട്ട കളിയെക്കുറിച്ച് ഉർദുവിൽ എഴുതൂ. ഉദാ: مجھے کرکٹ پسند ہے۔</p>
+  <textarea id="fav" placeholder="..."></textarea><button class="btn" onclick="speak(fav.value)">🔊 വായിച്ചു കേൾക്കാം</button></div></section>
+<section id="s-tree"><div class="card"><h2>🌳 അക്ഷരമരം</h2>
+  <p class="ml">അക്ഷരങ്ങൾ തൊട്ട് വാക്ക് ഉണ്ടാക്കൂ.</p><div id="g4"></div></div></section>
+<section id="s-quiz"><div class="card"><h2>🏆 ക്വിസ്</h2><div id="g5"></div></div></section>
+</main>
+<div id="pop"></div>
+<script>
+/* ---------- DATA ---------- */
+const CONV=[
+["ٹیچر! کل اسکول میں کھیل کود کا دن ہے نا؟","ടീച്ചർ! നാളെ സ്കൂളിൽ കായികദിനം അല്ലേ?"],
+["ہاں بچّو! آپ سب اس میں ضرور حصّہ لیں۔","അതെ കുട്ടികളേ! നിങ്ങൾ എല്ലാവരും തീർച്ചയായും പങ്കെടുക്കണം."],
+["ٹیچر! ثانیہ کھیل کے بارے میں ایک گیت سنائے گی۔","ടീച്ചർ! സാനിയ കളിയെക്കുറിച്ച് ഒരു പാട്ട് പാടും."],
+["شاباش ثانیہ! ہم سب یہ گیت مل کر گائیں گے۔","കൊള്ളാം സാനിയ! നമ്മൾ എല്ലാവരും ഈ പാട്ട് ഒരുമിച്ച് പാടാം."]];
+const POEM=[
+["آؤ بچّو مل کر کھیلیں","വരൂ കുട്ടികളേ, ഒരുമിച്ച് കളിക്കാം"],
+["آنکھ مچولی مل کر کھیلیں","ഒളിച്ചുകളി ഒരുമിച്ച് കളിക്കാം"],
+["کرکٹ کھیلیں فٹ بال کھیلیں","ക്രിക്കറ്റും ഫുട്ബോളും കളിക്കാം"],
+["ہنسی خوشی سے مل کر کھیلیں","ചിരിച്ചും സന്തോഷിച്ചും ഒരുമിച്ച് കളിക്കാം"],
+["ہاکی کھیلیں کبڈی کھیلیں","ഹോക്കിയും കബഡിയും കളിക്കാം"],
+["اچھلیں کودیں جوش سے کھیلیں","ചാടിത്തുള്ളി ആവേശത്തോടെ കളിക്കാം"],
+["چھپا چھپی چھپ کر کھیلیں","ഒളിച്ചുകളി, ഒളിച്ചിരുന്ന് കളിക്കാം"],
+["اندر باہر ہوش سے کھیلیں","അകത്തും പുറത്തും ശ്രദ്ധയോടെ കളിക്കാം"],
+["آؤ بچّو مل کر کھیلیں","വരൂ കുട്ടികളേ, ഒരുമിച്ച് കളിക്കാം"],
+["آپس میں ہم مل کر کھیلیں","നമ്മൾ തമ്മിൽ ഒരുമിച്ച് കളിക്കാം"]];
+const KAB=[
+["کبڈی ایک اچھا کھیل ہے۔","കബഡി ഒരു നല്ല കളിയാണ്."],
+["یہ میدان میں کھیلتے ہیں۔","ഇത് മൈതാനത്ത് കളിക്കുന്നു."],
+["دو ٹیم بن کر کبڈی کھیلتے ہیں۔","രണ്ട് ടീമായി കബഡി കളിക്കുന്നു."],
+["ایک ٹیم میں سات کھلاڑی ہوتے ہیں۔","ഒരു ടീമിൽ ഏഴ് കളിക്കാരുണ്ട്."]];
+const DICT={"کل":"നാളെ / ഇന്നലെ","اسکول":"സ്കൂൾ","میں":"ൽ (in)","کھیل":"കളി","کود":"ചാട്ടം","دن":"ദിവസം","ہے":"ആണ്","نا":"അല്ലേ?","ہاں":"അതെ","بچو":"കുട്ടികളേ","آپ":"നിങ്ങൾ","سب":"എല്ലാവരും","اس":"ഇതിൽ","ضرور":"തീർച്ചയായും","حصہ":"പങ്ക്","لیں":"എടുക്കൂ","ثانیہ":"സാനിയ","کے":"ന്റെ","بارے":"കുറിച്ച്","ایک":"ഒരു","گیت":"പാട്ട്","سنائے":"കേൾപ്പിക്കും","گی":"(ഭാവി)","شاباش":"കൊള്ളാം!","ہم":"നമ്മൾ","یہ":"ഇത്","مل":"ഒരുമിച്ച്","کر":"ചെയ്ത്","گائیں":"പാടാം","گائیں":"പാടും","آؤ":"വരൂ","آنکھ":"കണ്ണ്","مچولی":"ഒളിച്ചുകളി","کرکٹ":"ക്രിക്കറ്റ്","فٹ":"ഫുട് (ഫുട്ബോൾ)","بال":"ബോൾ","ہنسی":"ചിരി","خوشی":"സന്തോഷം","سے":"കൊണ്ട് / ഓടെ","ہاکی":"ഹോക്കി","کبڈی":"കബഡി","اچھلیں":"ചാടൂ","کودیں":"തുള്ളൂ","جوش":"ആവേശം","چھپا":"ഒളിച്ചുകളി","چھپی":"ഒളിച്ചുകളി","چھپ":"ഒളിക്കുക","اندر":"അകത്ത്","باہر":"പുറത്ത്","ہوش":"ശ്രദ്ധ","آپس":"പരസ്പരം","کھیلیں":"കളിക്കാം","ٹیچر":"ടീച്ചർ","اچھا":"നല്ല","میدان":"മൈതാനം","کھیلتے":"കളിക്കുന്നു","ہیں":"ആണ് (ബഹുവചനം)","دو":"രണ്ട്","ٹیم":"ടീം","بن":"ആയി","سات":"ഏഴ്","کھلاڑی":"കളിക്കാർ","ہوتے":"ഉണ്ടാകും","بچوں":"കുട്ടികൾ"};
+const norm=s=>s.replace(/[\u064B-\u065F\u0670\u06D4\u061F!،"']/g,'').replace(/[ؕ۔؟]/g,'').trim();
+const D={};for(const k in DICT)D[norm(k)]=DICT[k];
+
+/* ---------- SPEECH ---------- */
+let voice=null;
+function pickVoice(){const v=speechSynthesis.getVoices();
+  voice=v.find(x=>/^ur/i.test(x.lang))||null;
+  window.fallback=!voice?(v.find(x=>/^hi/i.test(x.lang))||null):null;
+  const n=document.getElementById('voiceNote');
+  if(n)n.textContent=voice?'':'ℹ️ ഈ ഉപകരണത്തിൽ ഉർദു ശബ്ദം ഇല്ല; ഹിന്ദി ശബ്ദം ഉപയോഗിക്കുന്നു (Settings → Text-to-speech-ൽ Urdu ചേർക്കാം).';}
+if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=pickVoice;pickVoice();}
+function speak(t,queue){if(!('speechSynthesis' in window)||!t)return;
+  if(!queue)speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);u.lang=voice?voice.lang:(window.fallback?window.fallback.lang:'ur-PK');
+  const vv=voice||window.fallback;if(vv)u.voice=vv;u.rate=.8;speechSynthesis.speak(u);}
+function playAll(a){speechSynthesis.cancel();a.forEach(l=>speak(l[0],true));}
+
+/* ---------- UI HELPERS ---------- */
+let stars=0;
+function star(n=1){stars+=n;document.getElementById('stars').textContent='⭐ '+stars;}
+function fly(e){for(let i=0;i<8;i++){const s=document.createElement('div');s.className='fly';s.textContent=['🎉','⭐','🌟','🏅'][i%4];
+  s.style.left=(20+Math.random()*60)+'vw';s.style.top=(50+Math.random()*30)+'vh';document.body.appendChild(s);setTimeout(()=>s.remove(),1400);}}
+const PRAISE=['شاباش! 🎉 കൊള്ളാം!','واہ! 🌟 മിടുക്കൻ/മിടുക്കി!','بہت خوب! 🏅 സൂപ്പർ!'];
+const praise=()=>PRAISE[Math.floor(Math.random()*3)];
+const shuf=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+let popT;function showPop(h){const p=document.getElementById('pop');p.innerHTML=h;p.style.display='block';clearTimeout(popT);popT=setTimeout(()=>p.style.display='none',3500);}
+
+/* ---------- READING ---------- */
+function wrap(t){return t.split(' ').map(w=>`<span class="w" data-k="${norm(w)}">${w}</span>`).join(' ');}
+function lines(id,arr){const el=document.getElementById(id);
+  el.innerHTML=arr.map((l,i)=>`<div class="line"><button class="say" onclick="speak(arr_${id}[${i}][0])" aria-label="listen">🔊</button><div class="t"><div class="ur">${wrap(l[0])}</div><div class="ml">${l[1]}</div></div></div>`).join('');}
+const arr_conv=CONV,arr_poem=POEM,arr_kab=KAB;
+['conv','poem','kab'].forEach(id=>lines(id,{conv:CONV,poem:POEM,kab:KAB}[id]));
+document.addEventListener('click',e=>{const w=e.target.closest('.w');if(!w)return;
+  const k=w.dataset.k;speak(w.textContent.replace(/[۔؟]/g,''));
+  showPop(`<span class="ur" style="font-size:1.4rem">${k}</span><br>${D[k]||'—'}`);});
+
+/* ---------- MATCH ENGINE ---------- */
+function match(id,pairs){const el=document.getElementById(id);let sel=null,left=pairs.length;
+  el.innerHTML=`<div class="grid"><div id="${id}c"></div><div id="${id}t"></div></div><div class="msg" id="${id}m"></div>`;
+  const C=document.getElementById(id+'c'),T=document.getElementById(id+'t'),M=document.getElementById(id+'m');
+  shuf(pairs.map((p,i)=>i)).forEach(i=>{const c=document.createElement('div');c.className='chip';c.draggable=true;c.dataset.i=i;
+    c.innerHTML=pairs[i].c;c.style.marginBottom='10px';
+    c.onclick=()=>{if(sel)sel.classList.remove('sel');sel=c;c.classList.add('sel');speak(pairs[i].say);};
+    c.ondragstart=e=>{e.dataTransfer.setData('t',i);sel=c;};C.appendChild(c);});
+  pairs.forEach((p,i)=>{const t=document.createElement('div');t.className='tgt';t.style.marginBottom='10px';t.innerHTML=p.t;
+    const tryIt=ci=>{if(ci==null)return;
+      if(+ci===i){t.classList.add('ok');t.innerHTML=p.t.replace('____',`<b style="color:#1b8a3b">${p.fill}</b>`);
+        C.querySelector(`[data-i="${i}"]`).classList.add('done');speak(p.sent);star();fly();M.textContent=praise();
+        if(--left===0){M.innerHTML='🏆 سب ٹھیک! എല്ലാം ശരി! +3⭐';star(3);}sel=null;}
+      else{t.classList.add('shake');setTimeout(()=>t.classList.remove('shake'),400);
+        M.innerHTML='🤔 ഒന്നുകൂടി ശ്രമിക്കൂ! സൂചന: '+pairs[ci].hint;}};
+    t.onclick=()=>{if(sel){tryIt(sel.dataset.i);if(sel)sel.classList.remove('sel');sel=null;}};
+    t.ondragover=e=>e.preventDefault();t.ondrop=e=>{e.preventDefault();tryIt(e.dataTransfer.getData('t'));};
+    T.appendChild(t);});}
+match('g1',[
+ {c:'🏏 <span class="ur">بلّا</span><span class="ml">ബാറ്റ്</span>',t:'<span class="ur">____</span>',fill:'کرکٹ',hint:'ബാറ്റ് → ക്രിക്കറ്റ്',say:'بلّا',sent:'بلّے سے کرکٹ کھیلتے ہیں'},
+ {c:'🏑 <span class="ur">ہاکی اسٹک</span><span class="ml">ഹോക്കി സ്റ്റിക്ക്</span>',t:'<span class="ur">____</span>',fill:'ہاکی',hint:'സ്റ്റിക്ക് → ഹോക്കി',say:'ہاکی اسٹک',sent:'ہاکی اسٹک سے ہاکی کھیلتے ہیں'},
+ {c:'⚽ <span class="ur">گیند</span><span class="ml">പന്ത്</span>',t:'<span class="ur">____</span>',fill:'فٹ بال',hint:'പന്ത് → ഫുട്ബോൾ',say:'گیند',sent:'گیند سے فٹ بال کھیلتے ہیں'},
+ {c:'🏸 <span class="ur">شٹل بیٹ</span><span class="ml">ഷട്ടിൽ ബാറ്റ്</span>',t:'<span class="ur">____</span>',fill:'شٹل',hint:'ഷട്ടിൽ ബാറ്റ് → ഷട്ടിൽ',say:'شٹل بیٹ',sent:'شٹل بیٹ سے شٹل کھیلتے ہیں'}]);
+match('g2',[
+ {c:'👂 <span class="ur">کان</span><span class="ml">ചെവി</span>',t:'<span class="ur">ہم ____ سے سنتے ہیں۔</span>',fill:'کان',hint:'കേൾക്കുന്നത് ചെവികൊണ്ട്',say:'کان',sent:'ہم کان سے سنتے ہیں'},
+ {c:'👁️ <span class="ur">آنکھ</span><span class="ml">കണ്ണ്</span>',t:'<span class="ur">ہم ____ سے دیکھتے ہیں۔</span>',fill:'آنکھ',hint:'കാണുന്നത് കണ്ണുകൊണ്ട്',say:'آنکھ',sent:'ہم آنکھ سے دیکھتے ہیں'},
+ {c:'🦷 <span class="ur">دانت</span><span class="ml">പല്ല്</span>',t:'<span class="ur">ہم ____ سے چباتے ہیں۔</span>',fill:'دانت',hint:'ചവയ്ക്കുന്നത് പല്ലുകൊണ്ട്',say:'دانت',sent:'ہم دانت سے چباتے ہیں'},
+ {c:'👃 <span class="ur">ناک</span><span class="ml">മൂക്ക്</span>',t:'<span class="ur">ہم ____ سے سونگھتے ہیں۔</span>',fill:'ناک',hint:'മണക്കുന്നത് മൂക്കുകൊണ്ട്',say:'ناک',sent:'ہم ناک سے سونگھتے ہیں'}]);
+
+/* ---------- TILE BUILDER ---------- */
+function build(id,items,sep,fontSize){const el=document.getElementById(id);let i=0;
+  function load(){const it=items[i];const toks=shuf(it.t.split(sep));let got=[];
+    el.innerHTML=`<p class="ml">${it.m}</p><div class="answer ur" id="${id}a"></div><div id="${id}k" style="direction:rtl;text-align:center"></div>
+    <div class="msg" id="${id}m"></div><button class="btn" id="${id}r">↺ വീണ്ടും</button> <button class="btn" id="${id}l" style="background:var(--green)">🔊</button>`;
+    const A=document.getElementById(id+'a'),K=document.getElementById(id+'k'),M=document.getElementById(id+'m');
+    toks.forEach(tk=>{const b=document.createElement('span');b.className='tile';b.textContent=tk;
+      b.onclick=()=>{b.classList.add('used');got.push(tk);A.textContent=got.join(sep);speak(tk);
+        if(got.length===toks.length){if(got.join(sep)===it.t){M.textContent=praise();star(2);fly();speak(it.t);
+            setTimeout(()=>{i=(i+1)%items.length;load();},1800);}
+          else{M.textContent='🤔 ക്രമം ശരിയല്ല — വീണ്ടും ശ്രമിക്കൂ!';A.classList.add('shake');setTimeout(()=>{A.classList.remove('shake');load2();},900);}}};
+      K.appendChild(b);});
+    const load2=()=>{got=[];A.textContent='';K.querySelectorAll('.tile').forEach(x=>x.classList.remove('used'));M.textContent='';};
+    document.getElementById(id+'r').onclick=load2;document.getElementById(id+'l').onclick=()=>speak(it.t);}
+  load();}
+build('g3',[
+ {t:'بلّے سے کرکٹ کھیلتے ہیں',m:'ബാറ്റ് കൊണ്ട് ക്രിക്കറ്റ് കളിക്കുന്നു'},
+ {t:'گیند سے فٹ بال کھیلتے ہیں',m:'പന്ത് കൊണ്ട് ഫുട്ബോൾ കളിക്കുന്നു'},
+ {t:'ہاکی اسٹک سے ہاکی کھیلتے ہیں',m:'ഹോക്കി സ്റ്റിക്ക് കൊണ്ട് ഹോക്കി കളിക്കുന്നു'},
+ {t:'ہم کان سے سنتے ہیں',m:'നമ്മൾ ചെവികൊണ്ട് കേൾക്കുന്നു'}],' ');
+build('g4',[
+ {t:'کھیل',m:'കളി (കളി = കേൾ) – അക്ഷരങ്ങൾ ചേർത്ത് വാക്ക് ഉണ്ടാക്കൂ'},
+ {t:'گیند',m:'പന്ത്'},{t:'ہاکی',m:'ഹോക്കി'},{t:'دانت',m:'പല്ല്'},{t:'ناک',m:'മൂക്ക്'},
+ {t:'کان',m:'ചെവി'},{t:'ٹیم',m:'ടീം'},{t:'میدان',m:'മൈതാനം'}].map(x=>({...x,t:x.t})),'');
+
+/* ---------- QUIZ ---------- */
+const Q=[
+ ['ہم آنکھ سے ____ ہیں۔','നമ്മൾ കണ്ണുകൊണ്ട് ____',['دیکھتے','سنتے','چباتے'],0,'കണ്ണ് → കാണുക'],
+ ['ہم ناک سے ____ ہیں۔','നമ്മൾ മൂക്കുകൊണ്ട് ____',['سنتے','سونگھتے','دیکھتے'],1,'മൂക്ക് → മണക്കുക'],
+ ['ہم دانت سے ____ ہیں۔','നമ്മൾ പല്ലുകൊണ്ട് ____',['چباتے','سونگھتے','سنتے'],0,'പല്ല് → ചവയ്ക്കുക'],
+ ['بلّے سے ____ کھیلتے ہیں۔','ബാറ്റ് കൊണ്ട് ____ കളിക്കുന്നു',['ہاکی','کرکٹ','کبڈی'],1,'ബാറ്റ് ക്രിക്കറ്റിന്'],
+ ['ہاکی اسٹک سے ____ کھیلتے ہیں۔','ഹോക്കി സ്റ്റിക്ക് കൊണ്ട് ____ കളിക്കുന്നു',['ہاکی','فٹ بال','شٹل'],0,'സ്റ്റിക്ക് ഹോക്കിക്ക്'],
+ ['ایک ٹیم میں ____ کھلاڑی ہوتے ہیں۔','കബഡിയിൽ ഒരു ടീമിൽ ____ കളിക്കാർ',['پانچ','سات','گیارہ'],1,'ഏഴ് = سات'],
+ ['کبڈی ____ ٹیم بن کر کھیلتے ہیں۔','കബഡി ____ ടീമായി കളിക്കുന്നു',['دو','تین','چار'],0,'രണ്ട് = دو'],
+ ['ثانیہ ایک ____ سنائے گی۔','സാനിയ ഒരു ____ കേൾപ്പിക്കും',['گیت','کہانی','خبر'],0,'പാഠത്തിലെ സാനിയ പാട്ട് പാടുന്നു']];
+let qi=0,qs=0;
+function quiz(){const g=document.getElementById('g5');
+  if(qi>=Q.length){g.innerHTML=`<h2>🏆 ${qs}/${Q.length}</h2><p class="ml">${qs>=6?'അടിപൊളി! 🎉':'നല്ല ശ്രമം! ഒന്നുകൂടി ശ്രമിക്കൂ 💪'}</p><button class="btn" onclick="qi=0;qs=0;quiz()">↺ വീണ്ടും</button>`;return;}
+  const q=Q[qi];g.innerHTML=`<div class="ml">ചോദ്യം ${qi+1}/${Q.length}</div><h3 class="ur">${q[0]}</h3><div class="ml">${q[1]}</div>`
+   +q[2].map((o,i)=>`<button class="btn opt ur" data-i="${i}">${o}</button>`).join('')+'<div class="msg" id="qm"></div>';
+  speak(q[0].replace('____','')); 
+  g.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;
+    if(i===q[3]){b.classList.add('good');qs++;star(2);fly();document.getElementById('qm').textContent=praise();speak(q[0].replace('____',q[2][i]));
+      g.querySelectorAll('.opt').forEach(x=>x.disabled=true);setTimeout(()=>{qi++;quiz();},1800);}
+    else{b.classList.add('bad');b.disabled=true;document.getElementById('qm').innerHTML='🤔 ശ്രമിക്കൂ! സൂചന: '+q[4];}});}
+quiz();
+
+/* ---------- NAV ---------- */
+const TABS=[['read','📖 വായിക്കാം'],['m1','🏏 കളിയും ഉപകരണവും'],['m2','👂 ഇന്ദ്രിയങ്ങൾ'],['sent','✍️ വാക്യം'],['tree','🌳 അക്ഷരമരം'],['quiz','🏆 ക്വിസ്']];
+const nav=document.getElementById('nav');
+TABS.forEach((t,i)=>{const b=document.createElement('button');b.textContent=t[1];if(!i)b.className='on';
+  b.onclick=()=>{speechSynthesis.cancel();nav.querySelectorAll('button').forEach(x=>x.className='');b.className='on';
+    document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id==='s-'+t[0]));scrollTo(0,0);};nav.appendChild(b);});
+document.getElementById('s-read').classList.add('on');
+</script>
+</body>
+</html>
